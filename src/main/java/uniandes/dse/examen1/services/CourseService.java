@@ -17,7 +17,15 @@ public class CourseService {
     @Autowired
     CourseRepository courseRepository;
 
-    public CourseEntity createCourse(CourseEntity newCourse) throws RepeatedCourseException {
-        // TODO
+    public CourseEntity createCourse(CourseEntity newCourse) throws Exception {
+
+        CourseEntity curso = CourseRepository.findCoursebyCode();
+        if (newCourse == null){
+            throw new Exception("El curso no puede ser nulo");
+        }
+        if (newCourse == null){}
+        return courseRepository.save(newCourse);
     }
+
 }
+

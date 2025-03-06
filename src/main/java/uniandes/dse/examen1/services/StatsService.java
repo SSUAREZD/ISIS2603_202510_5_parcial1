@@ -22,11 +22,18 @@ public class StatsService {
     RecordRepository inscripcionRepository;
 
     public Double calculateStudentAverage(String login) {
+
+        courseEntity curso = cursoRepository.findByCourseCode(login);
+
+
         // TODO
     }
 
     public Double calculateCourseAverage(String courseCode) {
-        r// TODO
+
+
+
+        // TODO
     }
 
 }

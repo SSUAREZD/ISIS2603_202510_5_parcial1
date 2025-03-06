@@ -27,6 +27,10 @@ public class RecordEntity {
      */
     private String semester;
 
-    // TODO
+    @jakarta.persistence.OneToOne(mappedBy="Estudiante")
+    private CourseEntity curso;
+
+    @jakarta.persistence.OneToOne(mappedBy="Estudiante")
+    private StudentEntity student;
 
 }

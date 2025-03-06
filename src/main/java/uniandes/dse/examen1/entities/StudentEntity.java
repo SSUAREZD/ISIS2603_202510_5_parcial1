@@ -37,10 +37,13 @@ public class StudentEntity {
      * student in the course.
      */
     // TODO
+    @ManyToMany
+    private List<CourseEntity> cursos;
 
     /**
      * A list of all the courses that the student has ever taken. No course should
      * appear more than once in this list.
      */
-    // TODO
+    @OneToMany(mappedBy = "Estudiante")
+    private List<RecordEntity> registro = new ArrayList<>();
 }
