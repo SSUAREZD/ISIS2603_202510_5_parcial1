@@ -9,5 +9,5 @@ import uniandes.dse.examen1.entities.CourseEntity;
 
 @Repository
 public interface CourseRepository extends JpaRepository<CourseEntity, Long> {
-    Optional<CourseEntity> findByCourseCode(String courseCode);
+    Optional<CourseEntity> findByCourseCode(String curso);
 }

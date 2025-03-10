@@ -31,24 +31,23 @@ public class RecordService {
     public RecordEntity createRecord(String loginStudent, String courseCode, Double grade, String semester)
             throws InvalidRecordException {
 
-        java.util.Optional<uniandes.dse.examen1.entities.StudentEntity> estudiante= studentRepository.findByLogin(loginStudent);
-        java.util.Optional<uniandes.dse.examen1.entities.StudentEntity> curso= CourseRepository.findByCourseCode(loginStudent);
+            java.util.Optional<uniandes.dse.examen1.entities.StudentEntity> estudiante= studentRepository.findByLogin(loginStudent);
+            java.util.Optional<uniandes.dse.examen1.entities.CourseEntity> curso= courseRepository.findByCourseCode(courseCode);
+            RecordEntity newRecord = new RecordEntity();
+            
+            if(grade<=3){
+                throw new InvalidRecordException("El estudiante ya pasó la materia");
+            }
+            if(grade<=1.5 && grade>=5){
+                throw new InvalidRecordException("La nota no es valida");
+            }
+            if(estudiante== null){
+                throw new InvalidRecordException("El estudiante no existe");
+            }
+            if(curso == null){
+                throw new InvalidRecordException("El curso no existe");
+            }
 
-        RecordEntity newRecord = new RecordEntity();
-        if(grade<=3){
-            throw new InvalidRecordException("El estudiante ya pasó la materia");
-        }
-        if(grade<=1.5 && grade>=5){
-            throw new InvalidRecordException("La nota no es valida");
-        }
-        if(estudiante.isEmpty){
-            throw new InvalidRecordException("El estudiante no existe");
-        }
-        if(curso.isEmpty){
-            throw new InvalidRecordException("El curso no existe");
-        }
-
-        return RecordRepository.save(newRecord);
-        // TODO
+        return recordRepository.save(newRecord);
     }
 }

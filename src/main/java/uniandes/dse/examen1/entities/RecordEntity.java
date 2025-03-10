@@ -27,10 +27,17 @@ public class RecordEntity {
      */
     private String semester;
 
-    @jakarta.persistence.OneToOne(mappedBy="Estudiante")
+    @ManyToOne
     private CourseEntity curso;
 
-    @jakarta.persistence.OneToOne(mappedBy="Estudiante")
+    @ManyToOne
     private StudentEntity student;
 
+    public double getFinalGrade() {
+        return finalGrade;
+    }
+
+    public String getSemester() {
+        return semester;
+    }
 }

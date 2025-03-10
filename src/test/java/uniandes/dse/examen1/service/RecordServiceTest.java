@@ -1,6 +1,7 @@
 package uniandes.dse.examen1.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.List;
@@ -51,6 +52,7 @@ public class RecordServiceTest {
 
     private String login;
     private String courseCode;
+    private String semester;
 
     @BeforeEach
     void setUp() throws RepeatedCourseException, RepeatedStudentException {
@@ -68,7 +70,14 @@ public class RecordServiceTest {
      */
     @Test
     void testCreateRecord() {
-        // TODO
+        try {
+            RecordEntity record = recordService.createRecord(login, courseCode, 4.0, semester);
+            assertEquals(4.0, record.getFinalGrade());
+            assertEquals(login, record.getStudent().getLogin());
+            assertEquals(courseCode, record.getCurso().getCourseCode());
+        } catch (InvalidRecordException e) {
+            fail("Exception thrown: " + e.getMessage());
+        }
     }
 
     /**
@@ -76,23 +85,29 @@ public class RecordServiceTest {
      */
     @Test
     void testCreateRecordMissingStudent() {
-        // TODO
+        assertThrows(InvalidRecordException.class, () -> {
+            recordService.createRecord("wrongLogin", courseCode, 4.0, semester);
+        });
     }
 
     /**
      * Tests the creation of a record when the course code is wrong
      */
     @Test
-    void testCreateInscripcionMissingCourse() {
-        // TODO
+    void testCreateRecordMissingCourse() {
+        assertThrows(InvalidRecordException.class, () -> {
+            recordService.createRecord(login, "wrongCourseCode", 4.0, semester);
+        });
     }
 
     /**
      * Tests the creation of a record when the grade is not valid
      */
     @Test
-    void testCreateInscripcionWrongGrade() {
-        // TODO
+    void testCreateRecordWrongGrade() {
+        assertThrows(InvalidRecordException.class, () -> {
+            recordService.createRecord(login, courseCode, 6.0, semester);
+        });
     }
 
     /**
@@ -100,8 +115,15 @@ public class RecordServiceTest {
      * for the course
      */
     @Test
-    void testCreateInscripcionRepetida1() {
-        // TODO
+    void testCreateRecordRepetida1() {
+        try {
+            recordService.createRecord(login, courseCode, 4.0, semester);
+            assertThrows(InvalidRecordException.class, () -> {
+                recordService.createRecord(login, courseCode, 3.0, semester);
+            });
+        } catch (InvalidRecordException e) {
+            fail("Exception thrown: " + e.getMessage());
+        }
     }
 
     /**
@@ -109,7 +131,13 @@ public class RecordServiceTest {
      * course, but he has not passed the course yet.
      */
     @Test
-    void testCreateInscripcionRepetida2() {
-        // TODO
+    void testCreateRecordRepetida2() {
+        try {
+            recordService.createRecord(login, courseCode, 2.0,  semester);
+            RecordEntity record = recordService.createRecord(login, courseCode, 3.0, semester);
+            assertEquals(3.0, record.getFinalGrade());
+        } catch (InvalidRecordException e) {
+            fail("Exception thrown: " + e.getMessage());
+        }
     }
 }

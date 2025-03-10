@@ -1,6 +1,7 @@
 package uniandes.dse.examen1.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -32,16 +33,33 @@ public class CourseServiceTest {
 
     @BeforeEach
     void setUp() {
-
     }
 
     @Test
     void testCreateRecordMissingCourse() {
-        // TODO
+        CourseEntity course = factory.manufacturePojo(CourseEntity.class);
+        course.setCode("CS101");
+        try {
+            CourseEntity savedCourse = courseService.createCourse(course);
+            CourseEntity foundCourse = entityManager.find(CourseEntity.class, savedCourse.getId());
+            assertEquals(course.getCode(), foundCourse.getCode());
+        } catch (Exception e) {
+            fail("Exception thrown: " + e.getMessage());
+        }
+        
     }
 
     @Test
     void testCreateRepeatedCourse() {
-        // TODO
+        CourseEntity course1 = factory.manufacturePojo(CourseEntity.class);
+        course1.setCode("CS101");
+        entityManager.persist(course1);
+
+        CourseEntity course2 = factory.manufacturePojo(CourseEntity.class);
+        course2.setCode("CS101");
+
+        assertThrows(RepeatedCourseException.class, () -> {
+            courseService.createCourse(course2);
+        });
     }
 }

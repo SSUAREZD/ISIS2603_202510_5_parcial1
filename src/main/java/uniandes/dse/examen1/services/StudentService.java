@@ -18,14 +18,11 @@ public class StudentService {
     StudentRepository studentRepository;
 
     public StudentEntity createStudent(StudentEntity newStudent) throws RepeatedStudentException {
-
-           String login = StudentEntity.getLogin;
-        if (newStudent== null){
-            throw new RepeatedStudentException("El estudiante no puede ser nulo");
+        String login = newStudent.getLogin();
+        if (!studentRepository.findByLogin(login).isEmpty()){
+        throw new RepeatedStudentException("El login ya existe");
         }
-
-        if (studentRepository.findByLogin(loginStudent).isEmpty()){
-            return StudentRepository.save(newStudent);
-        }
+        return studentRepository.save(newStudent);
     }
+}
 

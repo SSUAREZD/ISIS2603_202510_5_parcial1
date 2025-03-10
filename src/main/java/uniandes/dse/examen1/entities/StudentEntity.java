@@ -44,6 +44,10 @@ public class StudentEntity {
      * A list of all the courses that the student has ever taken. No course should
      * appear more than once in this list.
      */
-    @OneToMany(mappedBy = "Estudiante")
+    @OneToMany
     private List<RecordEntity> registro = new ArrayList<>();
+
+    public String getLogin() {
+        return login;
+    }
 }
